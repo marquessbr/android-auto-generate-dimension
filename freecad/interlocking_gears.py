@@ -124,7 +124,15 @@ def involute_point(base_radius, angle):
 def generate_involute_points(base_radius, start_angle, end_angle, num_points=20):
     """
     Generate a series of points along an involute curve.
+    
+    Note: This function is provided for reference and can be used for 
+    creating more detailed gear profiles in future enhancements.
     """
+    if num_points < 2:
+        num_points = 2  # Minimum 2 points to avoid division by zero
+    if base_radius <= 0:
+        raise ValueError("base_radius must be positive")
+    
     points = []
     for i in range(num_points):
         t = start_angle + (end_angle - start_angle) * i / (num_points - 1)
@@ -137,13 +145,24 @@ def create_gear_profile_external(dims, num_points_per_tooth=20):
     """
     Create the 2D profile of an external gear (pinion).
     Returns a list of points forming the gear profile.
+    
+    Note: This function is provided for reference and can be used for 
+    creating more detailed gear profiles with proper involute curves.
     """
     teeth = dims['teeth']
+    if teeth <= 0:
+        raise ValueError("Number of teeth must be positive")
+    if num_points_per_tooth < 2:
+        num_points_per_tooth = 2  # Minimum 2 points to avoid division by zero
+    
     pitch_radius = dims['pitch_diameter'] / 2
     base_radius = dims['base_diameter'] / 2
     outer_radius = dims['outer_diameter'] / 2
     root_radius = dims['root_diameter'] / 2
     pressure_angle_rad = math.radians(dims['pressure_angle'])
+    
+    if base_radius <= 0:
+        raise ValueError("Base radius must be positive")
     
     # Angular pitch (angle between teeth)
     angular_pitch = 2 * math.pi / teeth
